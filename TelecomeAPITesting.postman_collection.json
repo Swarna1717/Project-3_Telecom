@@ -1,0 +1,715 @@
+{
+	"info": {
+		"_postman_id": "c86ced63-6783-4b9b-af6d-f4197a1df536",
+		"name": "TelecomeAPITesting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39823615"
+	},
+	"item": [
+		{
+			"name": "AddNewUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for status code 201\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(201);\r",
+							"})\r",
+							"pm.test(\"Test for status message Created\",()=>{\r",
+							"  pm.expect(pm.response.status).to.eql(\"created\");\r",
+							"})\r",
+							"var res=pm.response.json();\r",
+							"console.log(res.token);\r",
+							"pm.environment.set(\"token\",res.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var time=new Date().getTime();\r",
+							"var newemail= \"Swarna\"+time+\"@gmail.com\";\r",
+							"console.log(newemail);\r",
+							"pm.environment.set(\"useremail\",newemail);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"firstName\": \"Swarna\", \r\n\"lastName\": \"Mishra\", \r\n\"email\": \"{{useremail}}\",\r\n\"password\": \"myPassword\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/users",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserProfile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for Status message 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Test for status message OK\",()=>{\r",
+							"  pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/users/me",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(counter=1);\r",
+							"\r",
+							"\r",
+							"if (typeof(counter) === 'string'){\r",
+							"  counter = Number.parseInt(counter);\r",
+							"}\r",
+							"\r",
+							"var counter= Number.parseInt(counter)\r",
+							"pm.environment.set('counter', counter + 1);\r",
+							"var name = \"Swarna\" + counter;\r",
+							"pm.environment.set('name', name);\r",
+							"\r",
+							"var time=new Date().getTime();\r",
+							"var dynamicEmail= \"Swarna2\"+time+\"@gmail.com\";\r",
+							"console.log(dynamicEmail);\r",
+							"pm.environment.set(\"useremail\",dynamicEmail);\r",
+							"\r",
+							"console.log(name);\r",
+							"console.log(dynamicEmail);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for Status message 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Test for status message OK\",()=>{\r",
+							"  pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"})\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"firstName\": \"{{name}}\", \r\n\"lastName\": \"Mishra\", \r\n\"email\": \"{{useremail}}\", \r\n\"password\": \"myNewPassword\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/users/me",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Fixed JSON parsing error by checking the response type\r",
+							"pm.test(\"Test for Status message 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(200);   \r",
+							"});\r",
+							"pm.test(\"Test for status message OK\",()=>{\r",
+							"  pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"});\r",
+							"var res=pm.response.text();\r",
+							"console.log(res);\r",
+							"pm.environment.set(\"logintoken\",res);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{ \r\n \r\n\"email\": \"{{useremail}}\", \r\n\"password\": \"myNewPassword\" \r\n \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/users/login",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for Status message 201\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Test for status message created\",()=>{\r",
+							"  pm.expect(pm.response.status).to.eql(\"Created\");\r",
+							"});\r",
+							"\r",
+							"var res=pm.response.json();\r",
+							"console.log(res.token);\r",
+							"pm.environment.set(\"logintoken\",res.token);\r",
+							"\r",
+							"pm.environment.set(\"contactid\",res._id);\r",
+							"console.log(res._id);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"firstName\": \"Vihaan\", \r\n\"lastName\": \"Mishra\", \r\n\"birthdate\": \"2015-09-02\", \r\n\"email\": \"Vihaantest@gmail.com\", \r\n\"phone\": \"8005555555\", \r\n\"street1\": \"1 Main St.\", \r\n\"street2\": \"Apartment A\", \r\n\"city\": \"Anytown\", \r\n\"stateProvince\": \"KS\", \r\n\"postalCode\": \"12345\", \r\n\"country\": \"USA\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetContactlist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for Status message 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Test for status message OK\",()=>{\r",
+							"  pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"})\r",
+							"\r",
+							"var res=pm.response.text();\r",
+							"console.log(res);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts/",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetContact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for Status message 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Test for status message OK\",()=>{\r",
+							"  pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts/{{contactid}}",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts",
+						"{{contactid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateContact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for Status message 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Test for status message OK\",()=>{\r",
+							"  pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"firstName\": \"Amy\", \r\n\"lastName\": \"Miller\",\r\n \r\n \r\n\"birthdate\": \"1992-02-02\", \r\n\"email\": \"amiller@fake.com\", \r\n\"phone\": \"8005554242\", \r\n\"street1\": \"13 School St.\", \r\n\"street2\": \"Apt. 5\", \r\n\"city\": \"Washington\", \r\n\"stateProvince\": \"QC\", \r\n\"postalCode\": \"A1A1A1\", \r\n\"country\": \"Canada\" \r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts/{{contactid}}",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts",
+						"{{contactid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC9Update Contact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for Status message 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Test for status message OK\",()=>{\r",
+							"  pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"})\r",
+							"var res=pm.response.json();\r",
+							"console.log(res);\r",
+							"pm.test(\"Test for firstName should be Anna\",()=>{\r",
+							"    pm.expect(res.firstName).to.eql(\"Anna\");\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n\"firstName\": \"Anna\",\r\n\"lastName\": \"Miller\"\r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/contacts/{{contactid}}",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"contacts",
+						"{{contactid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Test for Status message 200\",()=>{\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Test for status message OK\",()=>{\r",
+							"  pm.expect(pm.response.status).to.eql(\"OK\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://thinking-tester-contact-list.herokuapp.com/users/logout",
+					"protocol": "https",
+					"host": [
+						"thinking-tester-contact-list",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
